@@ -61,6 +61,7 @@ export default {
 .om-coder .om-coder-preview {
   /* display: inline-block */
   position: relative;
+  overflow: hidden;
 }
 
 .om-coder .CodeMirror {

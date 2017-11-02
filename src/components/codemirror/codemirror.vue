@@ -7,22 +7,22 @@ import CodeMirror from 'codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/material.css'
 
-import 'codemirror/mode/htmlmixed/htmlmixed.js'
+// import 'codemirror/mode/htmlmixed/htmlmixed.js' // XML, JS, CSS
 import 'codemirror/mode/htmlembedded/htmlembedded.js'
 import 'codemirror/mode/css/css.js'
-import 'codemirror/mode/xml/xml.js'
-import 'codemirror/mode/meta.js'
+// import 'codemirror/mode/xml/xml.js' // XML
+// import 'codemirror/mode/meta.js' // META
 
 import 'codemirror/addon/fold/foldgutter.css'
 import 'codemirror/addon/fold/foldgutter.js'
-import 'codemirror/addon/fold/brace-fold.js'
+// import 'codemirror/addon/fold/brace-fold.js'  // FOR JS
 import 'codemirror/addon/fold/foldcode.js'
-import 'codemirror/addon/fold/indent-fold.js'
-import 'codemirror/addon/fold/xml-fold.js'
+// import 'codemirror/addon/fold/indent-fold.js'
+// import 'codemirror/addon/fold/xml-fold.js'
 
 import 'codemirror/addon/hint/show-hint.css'
 import 'codemirror/addon/hint/show-hint.js'
-import 'codemirror/addon/hint/xml-hint.js'
+// import 'codemirror/addon/hint/xml-hint.js'
 import 'codemirror/addon/hint/html-hint.js'
 import 'codemirror/addon/hint/css-hint.js'
 import 'codemirror/addon/hint/anyword-hint.js'
@@ -35,19 +35,31 @@ import 'codemirror/addon/lint/html-lint.js'
 import 'codemirror/addon/edit/closetag.js'
 // import 'codemirror/addon/selection/active-line.js'
 // import 'codemirror/addon/runmode/colorize.js'
-// import 'codemirror/addon/scroll/simplescrollbars.js'
+
+import 'codemirror/addon/scroll/simplescrollbars.css'
+import 'codemirror/addon/scroll/simplescrollbars.js'
+
+import 'codemirror/addon/scroll/annotatescrollbar.js' // 提供在滚动条上显示标记的功能，以调出文档的某些部分。
 
 import 'codemirror/addon/dialog/dialog.js'
 import 'codemirror/addon/dialog/dialog.css'
 
 import 'codemirror/addon/search/matchesonscrollbar.css'
 import 'codemirror/addon/search/matchesonscrollbar.js'
-import 'codemirror/addon/search/search.js'
-import 'codemirror/addon/search/searchcursor.js'
-import 'codemirror/addon/search/jump-to-line.js'
+
+import 'codemirror/addon/search/search.js' // 实现搜索命令
+import 'codemirror/addon/search/searchcursor.js' // 实现搜索/替换功能
+import 'codemirror/addon/search/jump-to-line.js' // 实现一个jumpToLine命令并绑定Alt-G到它
 import 'codemirror/addon/search/match-highlighter.js'
 
 import 'codemirror/addon/edit/matchbrackets.js'
+
+import 'codemirror/addon/display/panel.js'
+
+// import 'codemirror-revisedsearch'
+import './src/advancedsearch/advanced-dialog.js'
+import './src/advancedsearch/advanced-dialog.css'
+import './src/advancedsearch/revised-search.js'
 
 export default {
   name: 'OmCodeMirror',
@@ -154,13 +166,101 @@ export default {
     // if (theme && _loadtheme) {
     //   // require('codemirror/theme/' + theme + '.css')
     // }
+
+    // var dummy = {
+    //   attrs: {
+    //     color: ['red', 'green', 'blue', 'purple', 'white', 'black', 'yellow'],
+    //     size: ['large', 'medium', 'small'],
+    //     description: null
+    //   },
+    //   children: []
+    // };
+
+    // var tags = {
+    //   '!top': ['top'],
+    //   '!attrs': {
+    //     id: null,
+    //     class: ['A', 'B', 'C']
+    //   },
+    //   top: {
+    //     attrs: {
+    //       lang: ['en', 'de', 'fr', 'nl'],
+    //       freeform: null
+    //     },
+    //     children: ['animal', 'plant']
+    //   },
+    //   animal: {
+    //     attrs: {
+    //       name: null,
+    //       isduck: ['yes', 'no']
+    //     },
+    //     children: ['wings', 'feet', 'body', 'head', 'tail']
+    //   },
+    //   plant: {
+    //     attrs: { name: null },
+    //     children: ['leaves', 'stem', 'flowers']
+    //   },
+    //   wings: dummy,
+    //   feet: dummy,
+    //   body: dummy,
+    //   head: dummy,
+    //   tail: dummy,
+    //   leaves: dummy,
+    //   stem: dummy,
+    //   flowers: dummy
+    // };
+
+    // function completeAfter(cm, pred) {
+    //   // var cur = cm.getCursor();
+    //   if (!pred || pred()) {
+    //     setTimeout(function() {
+    //       if (!cm.state.completionActive) cm.showHint({ completeSingle: false })
+    //     }, 100);
+    //   }
+    //   return CodeMirror.Pass;
+    // }
+
+    // function completeIfAfterLt(cm) {
+    //   return completeAfter(cm, function() {
+    //     var cur = cm.getCursor();
+    //     return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) === '<'
+    //   });
+    // }
+
+    // function completeIfInTag(cm) {
+    //   return completeAfter(cm, function() {
+    //     var tok = cm.getTokenAt(cm.getCursor())
+    //     if (
+    //       tok.type === 'string' &&
+    //       (!/['']/.test(tok.string.charAt(tok.string.length - 1)) ||
+    //         tok.string.length === 1)
+    //     ) {
+    //       return false
+    //     }
+    //     var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state
+    //     return inner.tagName
+    //   });
+    // }
+
+    // this.options.extraKeys = {
+    //   '<': completeAfter,
+    //   '/': completeIfAfterLt,
+    //   ' ': completeIfInTag,
+    //   '=': completeIfInTag
+    // }
+
+    // this.options.hintOptions = {
+    //   schemaInfo: tags
+    // }
   },
   mounted() {
     var _this = this
     this.editor = CodeMirror.fromTextArea(this.$el, this.options)
-    this.editor.setValue(this.code || this.value || this.content)
+    const filterCode = this.removeScriptTag(this.code || this.value || this.content)
+    this.editor.setValue(filterCode)
     this.editor.on('change', function(cm) {
-      _this.content = cm.getValue()
+      // console.log('change')
+      _this.content = _this.removeScriptTag(cm.getValue())
       if (_this.$emit) {
         _this.$emit('change', _this.content)
         _this.$emit('input', _this.content)
@@ -204,7 +304,7 @@ export default {
     window.setTimeout(function() {
       _this.editor.refresh()
     }, 0)
-    console.log(this.editor)
+    console.log(this)
   },
   beforeDestroy() {
     // garbage cleanup
@@ -223,7 +323,8 @@ export default {
         }
       }
     },
-    code: function(newVal, oldVal) {
+    code(newVal, oldVal) {
+      // console.log('code')
       var editor_value = this.editor.getValue()
       if (newVal !== editor_value) {
         var scrollInfo = this.editor.getScrollInfo()
@@ -233,7 +334,8 @@ export default {
       }
       this.unseenLineMarkers()
     },
-    value: function(newVal, oldVal) {
+    value(newVal, oldVal) {
+      // console.log('value')
       var editor_value = this.editor.getValue()
       if (newVal !== editor_value) {
         var scrollInfo = this.editor.getScrollInfo()
@@ -256,6 +358,9 @@ export default {
           _this.editor.setGutterMarker(line, 'breakpoints', info.gutterMarkers ? null : _this.marker())
         })
       }
+    },
+    removeScriptTag(code) {
+      return code.replace(/(<script\b[^>]*>([\s\S]*?)<\/script>)/igm, '')
     }
   }
 }
